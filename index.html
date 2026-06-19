@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMART Bed Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --primary:#0f766e;
+    --secondary:#0ea5e9;
+    --accent:#ef4444;
+    --bg:#f5f7fb;
+    --card:#ffffff;
+    --text:#1e293b;
+    --shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    font-size:14px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+}
+
+.hero{
+    background:
+    linear-gradient(135deg,
+    #0f766e 0%,
+    #0891b2 50%,
+    #2563eb 100%);
+    color:white;
+    padding:46px 18px;
+    text-align:center;
+}
+
+.hero h1{
+    font-size:clamp(1.5rem,2.6vw,2.5rem);
+    font-weight:700;
+    line-height:1.2;
+    margin:0 auto 12px;
+    max-width:900px;
+}
+
+.hero p{
+    font-size:0.94rem;
+    opacity:.95;
+    max-width:680px;
+    margin:0 auto;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+    padding:30px 16px 40px;
+}
+
+.profile{
+    background:white;
+    padding:18px;
+    border-radius:18px;
+    box-shadow:var(--shadow);
+    margin-top:-18px;
+    position:relative;
+    z-index:5;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+}
+
+.profile-photo{
+    width:84px;
+    height:84px;
+    border-radius:16px;
+    background:linear-gradient(135deg, #dbeafe, #ccfbf1);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#0f766e;
+    font-size:2rem;
+    font-weight:700;
+    border:1px dashed rgba(15,118,110,.35);
+    flex-shrink:0;
+}
+
+.profile-info{
+    flex:1;
+    min-width:180px;
+}
+
+.profile h3{
+    color:var(--primary);
+    font-size:1rem;
+    margin-bottom:4px;
+}
+
+.profile p{
+    font-size:0.9rem;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:12px;
+    margin:24px auto;
+    max-width:1100px;
+}
+
+.stat{
+    background:white;
+    border-radius:14px;
+    padding:12px 10px;
+    box-shadow:var(--shadow);
+    text-align:left;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.stat-icon{
+    width:34px;
+    height:34px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg, rgba(15,118,110,.1), rgba(14,165,233,.1));
+    color:var(--primary);
+    font-size:0.9rem;
+    flex-shrink:0;
+}
+
+.stat-text{
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+}
+
+.stat h2{
+    font-size:1rem;
+    color:var(--primary);
+    margin:0;
+    line-height:1.1;
+}
+
+.stat span{
+    color:#64748b;
+    font-size:0.72rem;
+    line-height:1.3;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:22px;
+}
+
+.card{
+    background:var(--card);
+    padding:18px;
+    border-radius:0;
+    box-shadow:var(--shadow);
+    transition:.3s;
+    overflow:hidden;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card h2{
+    color:#fff;
+    font-size:0.95rem;
+    font-weight:700;
+    margin:-18px -18px 14px;
+    padding:12px 16px;
+    background:linear-gradient(90deg, #0f766e, #0891b2, #2563eb);
+    border-radius:0;
+}
+
+.card > p,
+.card > ul,
+.card > ol,
+.card > h3{
+    padding:0 6px 0 10px;
+}
+
+.card p,
+.card li{
+    font-size:0.9rem;
+    text-align:left;
+    max-width:68ch;
+}
+
+.review-section{
+    margin:28px 0;
+}
+
+.review-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+}
+
+.review-header h2{
+    color:var(--primary);
+    font-size:1rem;
+    font-weight:700;
+}
+
+.review-tag{
+    background:rgba(15,118,110,.08);
+    color:var(--primary);
+    padding:5px 9px;
+    border-radius:999px;
+    font-size:0.78rem;
+    font-weight:600;
+    white-space:nowrap;
+}
+
+.review-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:18px;
+}
+
+.review-card{
+    background:white;
+    border-radius:0;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    border:1px solid #eef2f7;
+}
+
+.review-visual{
+    position:relative;
+    height:200px;
+    background:
+        linear-gradient(135deg, rgba(15,118,110,.92), rgba(14,165,233,.78)),
+        linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px) 0 0 / 18px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    border-radius:0;
+}
+
+.review-visual img,
+.review-visual video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    max-width:100%;
+    max-height:100%;
+}
+
+.review-visual::before,
+.review-visual::after{
+    content:'';
+    position:absolute;
+    background:rgba(255,255,255,.08);
+    border-radius:999px;
+}
+
+.review-visual::before{
+    width:180px;
+    height:180px;
+    top:-50px;
+    right:-40px;
+}
+
+.review-visual::after{
+    width:120px;
+    height:120px;
+    bottom:-35px;
+    left:-25px;
+}
+
+.review-placeholder{
+    position:relative;
+    z-index:1;
+    width:82%;
+    height:72%;
+    background:rgba(255,255,255,.12);
+    border:1px dashed rgba(255,255,255,.45);
+    border-radius:16px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:white;
+    backdrop-filter:blur(2px);
+}
+
+.review-placeholder i{
+    font-size:2rem;
+    margin-bottom:8px;
+}
+
+.review-placeholder strong{
+    display:block;
+    font-size:0.95rem;
+    margin-bottom:4px;
+}
+
+.review-placeholder span{
+    font-size:0.8rem;
+    opacity:.88;
+}
+
+.review-card p{
+    padding:12px 14px 14px;
+    font-size:0.86rem;
+    color:#475569;
+}
+
+.review-media-hint{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:0 14px 10px;
+    font-size:0.72rem;
+    color:#64748b;
+    letter-spacing:.02em;
+    font-style:normal;
+}
+
+.review-media-hint i{
+    font-size:0.78rem;
+    color:#0f766e;
+    font-style:normal;
+}
+
+.timeline{
+    margin-top:20px;
+}
+
+.step{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:15px;
+}
+
+.badge{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+.highlight{
+    background:linear-gradient(
+    135deg,
+    rgba(15,118,110,.08),
+    rgba(14,165,233,.1)
+    );
+    border:1px solid rgba(15,118,110,.12);
+}
+
+.ref{
+    margin-top:40px;
+}
+
+.ref ol{
+    padding-left:20px;
+}
+
+.ref li{
+    margin-bottom:12px;
+}
+
+.ref a{
+    color:#2563eb;
+    text-decoration:none;
+}
+
+.footer{
+    margin-top:50px;
+    text-align:center;
+    color:#64748b;
+    padding:25px;
+}
+
+.modal-preview{
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.45);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+    padding:20px;
+}
+
+.modal-preview.active{
+    display:flex;
+}
+
+.modal-preview-panel{
+    position:relative;
+    width:min(1100px, 100%);
+    max-height:90vh;
+    background:transparent;
+    box-shadow:none;
+    overflow:hidden;
+}
+
+.modal-preview-close{
+    position:absolute;
+    top:10px;
+    right:10px;
+    width:40px;
+    height:40px;
+    border:none;
+    background:#0f172a;
+    color:#fff;
+    border-radius:50%;
+    font-size:1rem;
+    cursor:pointer;
+    z-index:1;
+}
+
+.modal-preview-body{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:0;
+    background:transparent;
+}
+
+.modal-preview-body img,
+.modal-preview-body video{
+    width:100%;
+    max-height:85vh;
+    object-fit:contain;
+    display:block;
+    background:transparent;
+    border-radius:0;
+}
+
+@media(max-width:768px){
+    .container{
+        padding:24px 12px 36px;
+    }
+
+    .profile{
+        margin-top:-10px;
+        padding:16px;
+        margin-bottom:18px;
+    }
+
+    .stats{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:14px;
+        margin-top:10px;
+    }
+
+    .review-grid,
+    .grid{
+        grid-template-columns:1fr;
+        gap:16px;
+    }
+
+    .card,
+    .stat,
+    .review-card{
+        border-radius:0;
+    }
+
+    .card{
+        padding:18px 16px;
+    }
+
+    .hero{
+        padding:40px 14px;
+    }
+
+    .hero h1{
+        font-size:1.6rem;
+    }
+
+    .hero p{
+        font-size:0.9rem;
+    }
+
+    .review-header{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+}
+
+@media(max-width:480px){
+    body{
+        font-size:13px;
+    }
+
+    .hero h1{
+        font-size:1.45rem;
+        line-height:1.3;
+    }
+
+    .card h2{
+        font-size:0.95rem;
+    }
+
+    .card p,
+    .card li,
+    .review-card p{
+        font-size:0.86rem;
+    }
+
+    .review-visual{
+        height:180px;
+    }
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+    <h1>
+        SMART Bed Dashboard
+    </h1>
+
+    <p>
+        Sistem Pendukung Keputusan Berbasis Real-Time untuk Mempercepat Penempatan Pasien IGD ke Rawat Inap dan Mengurangi Boarding Time
+    </p>
+</section>
+
+<div class="container">
+
+    <div class="profile">
+        <div class="profile-photo">P</div>
+        <div class="profile-info">
+            <h3>Patchuri</h3>
+            <p>Rumah Sakit Hermina Grand Wisata</p>
+            <p>📧 patchuriace@gmail.com</p>
+        </div>
+    </div>
+
+    <div class="stats">
+
+        <div class="stat">
+            <div class="stat-icon">⏱️</div>
+            <div class="stat-text">
+                <h2>Real-Time</h2>
+                <span>Monitoring Bed</span>
+            </div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-icon">🚑</div>
+            <div class="stat-text">
+                <h2>IGD</h2>
+                <span>Pasien Menunggu Rawat Inap</span>
+            </div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-icon">📶</div>
+            <div class="stat-text">
+                <h2>24/7</h2>
+                <span>Ketersediaan Informasi</span>
+            </div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-icon">💻</div>
+            <div class="stat-text">
+                <h2>Web</h2>
+                <span>Dashboard Terintegrasi</span>
+            </div>
+        </div>
+
+    </div>
+
+    <section class="review-section">
+        <div class="review-header">
+            <h2>Review Visual Dashboard</h2>
+            <span class="review-tag">UI Preview</span>
+        </div>
+
+        <div class="review-grid">
+            <div class="review-card">
+                <div class="review-visual">
+                    <img src="web1.png" alt="Tampilan dashboard web SMART Bed Dashboard" loading="lazy">
+                </div>
+                <span class="review-media-hint"><i>⤢</i> Tap untuk lihat penuh</span>
+                <p>Tampilan utama dashboard berbasis web untuk monitoring bed dan pasien secara real-time.</p>
+            </div>
+
+            <div class="review-card">
+                <div class="review-visual">
+                    <img src="mobile1.jpg" alt="Tampilan antarmuka Android SMART Bed Dashboard" loading="lazy">
+                </div>
+                <span class="review-media-hint"><i>⤢</i> Tap untuk lihat penuh</span>
+                <p>Konsep tampilan mobile untuk memantau informasi cepat dan notifikasi penting di perangkat Android.</p>
+            </div>
+
+            <div class="review-card">
+                <div class="review-visual">
+                    <img src="web2.png" alt="Notifikasi sistem Android untuk pasien baru" loading="lazy">
+                </div>
+                <span class="review-media-hint"><i>⤢</i> Tap untuk lihat penuh</span>
+                <p>Visualisasi notifikasi sistem Android untuk pasien baru yang masuk ke sistem.</p>
+            </div>
+
+            <div class="review-card">
+                <div class="review-visual">
+                    <img src="web2.png" alt="Chat koordinasi antar unit pada dashboard" loading="lazy">
+                </div>
+                <span class="review-media-hint"><i>⤢</i> Tap untuk lihat penuh</span>
+                <p>Interface chat koordinasi antar unit untuk mendukung komunikasi cepat dan responsif.</p>
+            </div>
+
+            <div class="review-card">
+                <div class="review-visual">
+                    <video controls playsinline preload="metadata" poster="flat-design-science-infographic/5945901.jpg">
+                        <source src="" type="video/mp4">
+                    </video>
+                </div>
+                <span class="review-media-hint"><i>⤢</i> Tap untuk lihat penuh</span>
+                <p>Area preview untuk video demo versi web yang akan ditambahkan nanti.</p>
+            </div>
+
+            <div class="review-card">
+                <div class="review-visual">
+                    <video
+                        controls
+                        playsinline
+                        preload="metadata"
+                        muted>
+                        <source src="android_dash.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <span class="review-media-hint"><i>⤢</i> Tap untuk lihat penuh</span>
+                <p>Area preview untuk video demo versi Android yang akan ditambahkan nanti.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="review-section">
+        <div class="review-header">
+            <h2>Preview Platform</h2>
+            <span class="review-tag">Web & Android</span>
+        </div>
+
+        <div class="review-grid">
+            <div class="review-card">
+                <div class="review-visual">
+                    <img src="web1.png" alt="Versi web dashboard admin SMART Bed Dashboard" loading="lazy">
+                </div>
+                <span class="review-media-hint"><i>⤢</i> Tap untuk lihat penuh</span>
+                <p>Antarmuka web untuk monitoring real-time, analitik layanan, dan pengambilan keputusan operasional.</p>
+            </div>
+
+            <div class="review-card">
+                <div class="review-visual">
+                    <img src="Screenshot_20260617_033959.jpg" alt="Versi Android SMART Bed Dashboard" loading="lazy">
+                </div>
+                <span class="review-media-hint"><i>⤢</i> Tap untuk lihat penuh</span>
+                <p>Versi Android memungkinkan staf cepat melihat status pasien, bed, dan notifikasi secara praktis.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="grid">
+
+        <div class="card">
+            <h2>ABSTRAK</h2>
+            <p>
+            Boarding time pasien di Instalasi Gawat Darurat (IGD) masih menjadi tantangan dalam pelayanan rumah sakit akibat keterbatasan informasi ketersediaan tempat tidur dan koordinasi antar unit yang belum terintegrasi. Penelitian ini bertujuan mengembangkan SMART Bed Dashboard sebagai sistem pendukung keputusan berbasis real-time untuk mempercepat penempatan pasien dari IGD ke ruang rawat inap. Metode yang digunakan adalah Prototype melalui tahapan analisis kebutuhan, perancangan, pengembangan, pengujian, dan implementasi sistem. SMART Bed Dashboard mengintegrasikan monitoring tempat tidur, monitoring pasien, komunikasi antar unit, notifikasi otomatis, dashboard analitik, dan Smart Alert System dalam satu platform. Hasil implementasi menunjukkan sistem mampu meningkatkan visibilitas ketersediaan tempat tidur, mempercepat koordinasi pelayanan, mendukung pengambilan keputusan, serta membantu pengendalian boarding time secara real-time.
+            </p>
+            <p><strong>Kata Kunci:</strong> Bed Management, Boarding Time, Dashboard Real-Time, Decision Support System.</p>
+        </div>
+
+        <div class="card">
+            <h2>LATAR BELAKANG</h2>
+            <ul>
+                <li>Boarding time yang tinggi dapat menyebabkan penumpukan pasien di IGD dan menurunkan efisiensi pelayanan.</li>
+                <li>Informasi ketersediaan tempat tidur masih sering diperoleh secara manual sehingga memperlambat proses penempatan pasien.</li>
+                <li>Koordinasi antara Admisi, IGD, dan Ruang Rawat Inap belum terintegrasi dalam satu platform.</li>
+                <li>Rumah sakit membutuhkan sistem yang mampu menyajikan informasi real-time sekaligus mendukung pengambilan keputusan operasional.</li>
+            </ul>
+        </div>
+
+        <div class="card highlight">
+            <h2>TUJUAN PENELITIAN</h2>
+            <p>
+            Mengembangkan SMART Bed Dashboard sebagai sistem pendukung keputusan berbasis real-time untuk:
+            </p>
+            <ol>
+                <li>Mempercepat penempatan pasien dari IGD ke ruang rawat inap.</li>
+                <li>Meningkatkan koordinasi antar unit pelayanan.</li>
+                <li>Mendukung monitoring indikator pelayanan secara terintegrasi.</li>
+                <li>Membantu pengurangan boarding time.</li>
+            </ol>
+        </div>
+
+        <div class="card">
+    <h2>METODOLOGI</h2>
+    <p>
+        Metode pengembangan menggunakan Prototype dengan tahapan:
+    </p>
+    <ol>
+        <li>Analisis kebutuhan pengguna.</li>
+        <li>Perancangan sistem.</li>
+        <li>Pengembangan aplikasi berbasis web.</li>
+        <li>Evaluasi dan perbaikan sistem.</li>
+        <li>Pengujian Black Box.</li>
+        <li>Implementasi.</li>
+    </ol>
+</div>
+
+        <div class="card">
+            <h2>HASIL</h2>
+            <p>
+            SMART Bed Dashboard berhasil dikembangkan dan diimplementasikan sebagai platform terintegrasi yang digunakan oleh Admisi, IGD, dan Ruang Rawat Inap.
+            </p>
+            <p>
+            Fitur utama yang tersedia:
+            </p>
+            <ul>
+                <li>Monitoring bed real-time.</li>
+                <li>Monitoring pasien (diagnosa, kelas perawatan, triase, LOS, boarding time).</li>
+                <li>Notifikasi otomatis penempatan pasien.</li>
+                <li>Chat koordinasi antar unit.</li>
+                <li>Dashboard analitik pelayanan.</li>
+                <li>Smart Alert System.</li>
+                <li>Notifikasi Kode Biru (experimental).</li>
+            </ul>
+            <p>
+            Sistem mampu menyediakan informasi operasional dan klinis dalam satu dashboard sehingga mempercepat koordinasi dan proses penempatan pasien.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="review-visual" style="height:180px; border-radius:14px;">
+                <div class="review-placeholder">
+                    <i>🖼️</i>
+                    <strong>Placeholder Hasil</strong>
+                    <span>Gambar Review Tambahan</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>ANALISIS</h2>
+            <p>
+            SMART Bed Dashboard mengubah proses bed management yang sebelumnya bersifat manual menjadi terintegrasi dan real-time. Integrasi data pasien, ketersediaan tempat tidur, komunikasi antar unit, dan sistem notifikasi membantu mempercepat proses transfer pasien dari IGD ke ruang rawat inap.
+            </p>
+            <p>
+            Nilai inovasi sistem terletak pada penerapan Smart Alert System yang memberikan indikator merah secara otomatis apabila parameter pelayanan melampaui batas yang ditentukan, seperti boarding time, LOS, occupancy rate, dan rasio biaya obat terhadap koding diagnosis. Fitur ini memungkinkan identifikasi dini terhadap potensi hambatan pelayanan dan mendukung pengambilan keputusan yang lebih cepat.
+            </p>
+        </div>
+
+        <div class="card">
+            <h2>KESIMPULAN DAN SARAN</h2>
+            <h3 style="font-size:0.9rem; color:var(--primary); margin:10px 0 6px;">Kesimpulan</h3>
+            <p>
+            SMART Bed Dashboard merupakan inovasi digital yang mengintegrasikan bed management, monitoring pasien, komunikasi antar unit, dashboard analitik, dan Smart Alert System dalam satu platform real-time. Sistem mendukung percepatan penempatan pasien, peningkatan koordinasi pelayanan, serta pengurangan boarding time di IGD.
+            </p>
+            <h3 style="font-size:0.9rem; color:var(--primary); margin:12px 0 6px;">Saran</h3>
+            <ul>
+                <li>Mengembangkan fitur prediksi ketersediaan tempat tidur berbasis data historis.</li>
+                <li>Mengintegrasikan sistem dengan EMR dan HIS rumah sakit.</li>
+                <li>Melakukan evaluasi kuantitatif terhadap dampak implementasi terhadap boarding time dan efisiensi pelayanan.</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="card ref">
+        <h2>REFERENSI</h2>
+
+        <ol>
+            <li>
+                Hall R. Patient Flow: Reducing Delay in Healthcare Delivery. Springer.
+            </li>
+
+            <li>
+                Wager KA, Lee FW, Glaser JP. Health Care Information Systems. Jossey-Bass.
+            </li>
+
+            <li>
+                Pressman RS, Maxim BR. Software Engineering: A Practitioner's Approach.
+            </li>
+
+            <li>
+                Sommerville I. Software Engineering.
+            </li>
+
+            <li>
+                Kementerian Kesehatan Republik Indonesia. Standar Pelayanan Rumah Sakit.
+            </li>
+        </ol>
+    </div>
+
+    <div class="footer">
+        © 2026 | SMART Bed Dashboard
+    </div>
+
+</div>
+
+    <div class="modal-preview" id="modalPreview">
+        <div class="modal-preview-panel">
+            <button class="modal-preview-close" aria-label="Tutup preview" onclick="closePreview()">✕</button>
+            <div class="modal-preview-body" id="modalPreviewBody"></div>
+        </div>
+    </div>
+
+    <script>
+        const previewModal = document.getElementById('modalPreview');
+        const previewBody = document.getElementById('modalPreviewBody');
+
+        document.querySelectorAll('.review-visual img, .review-visual video').forEach(el => {
+            el.style.cursor = 'zoom-in';
+            el.addEventListener('click', () => {
+                previewBody.innerHTML = '';
+                const clone = el.cloneNode(true);
+                if (clone.tagName.toLowerCase() === 'video') {
+                    clone.controls = true;
+                    clone.autoplay = true;
+                    clone.loop = false;
+                }
+                previewBody.appendChild(clone);
+                previewModal.classList.add('active');
+            });
+        });
+
+        function closePreview() {
+            previewModal.classList.remove('active');
+            previewBody.innerHTML = '';
+        }
+
+        previewModal.addEventListener('click', (e) => {
+            if (e.target === previewModal) closePreview();
+        });
+    </script>
+</body>
+</html>
+```
